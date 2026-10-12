@@ -27,53 +27,6 @@ function sinatra_enqueues() {
 		'all'
 	);
 
-	// Enqueue IE specific styles.
-	wp_enqueue_style(
-		'sinatra-ie',
-		SINATRA_THEME_URI . '/assets/css/compatibility/ie' . $sinatra_suffix . '.css',
-		false,
-		SINATRA_THEME_VERSION,
-		'all'
-	);
-
-	wp_style_add_data( 'sinatra-ie', 'conditional', 'IE' );
-
-	// Enqueue HTML5 shiv.
-	wp_register_script(
-		'html5shiv',
-		SINATRA_THEME_URI . '/assets/js/' . $sinatra_dir . 'vendors/html5' . $sinatra_suffix . '.js',
-		array(),
-		'3.7.3',
-		true
-	);
-
-	// Load only on < IE9.
-	wp_script_add_data(
-		'html5shiv',
-		'conditional',
-		'lt IE 9'
-	);
-
-	// Flexibility.js for crossbrowser flex support.
-	wp_enqueue_script(
-		'sinatra-flexibility',
-		SINATRA_THEME_URI . '/assets/js/' . $sinatra_dir . 'vendors/flexibility' . $sinatra_suffix . '.js',
-		array(),
-		SINATRA_THEME_VERSION,
-		false
-	);
-
-	wp_add_inline_script(
-		'sinatra-flexibility',
-		'flexibility(document.documentElement);'
-	);
-
-	wp_script_add_data(
-		'sinatra-flexibility',
-		'conditional',
-		'IE'
-	);
-
 	// Register ImagesLoaded library.
 	wp_register_script(
 		'imagesloaded',
@@ -158,11 +111,22 @@ add_action( 'wp_print_footer_scripts', 'sinatra_skip_link_focus_fix' );
 /**
  * Enqueue assets for the Block Editor.
  *
+ * Hooked to `enqueue_block_assets` so the styles are loaded inside the
+ * iframed editor canvas (WordPress 6.3+), and to `enqueue_block_editor_assets`
+ * for editors that don't fire `enqueue_block_assets` in the admin, such as
+ * the Customizer block widgets editor.
+ *
  * @since 1.0.0
+ * @since 1.5.0 Loaded via `enqueue_block_assets` for the iframed editor.
  *
  * @return void
  */
 function sinatra_block_editor_assets() {
+
+	// Admin only, and only once per style collection (both hooks may fire).
+	if ( ! is_admin() || wp_style_is( 'sinatra-block-editor-styles' ) ) {
+		return;
+	}
 
 	// RTL version.
 	$rtl = is_rtl() ? '-rtl' : '';
@@ -188,4 +152,5 @@ function sinatra_block_editor_assets() {
 		apply_filters( 'sinatra_block_editor_dynamic_css', sinatra_dynamic_styles()->get_block_editor_css() )
 	);
 }
+add_action( 'enqueue_block_assets', 'sinatra_block_editor_assets' );
 add_action( 'enqueue_block_editor_assets', 'sinatra_block_editor_assets' );

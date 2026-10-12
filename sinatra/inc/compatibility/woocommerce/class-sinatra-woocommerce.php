@@ -551,7 +551,7 @@ if ( ! class_exists( 'Sinatra_Woocommerce' ) ) :
 		public function breadcrumbs( $items, $args ) {
 
 			if ( function_exists( 'is_shop' ) && is_shop() ) {
-				$items[ count( $items ) - 1 ] = get_the_title( wc_get_page_id( 'shop' ) );
+				$items[ count( $items ) - 1 ] = esc_html( get_the_title( wc_get_page_id( 'shop' ) ) );
 			}
 
 			return $items;
@@ -568,7 +568,7 @@ if ( ! class_exists( 'Sinatra_Woocommerce' ) ) :
 		public function breadcrumb_post_type_archive_title( $label, $post_type_name ) {
 
 			if ( 'product' === $post_type_name ) {
-				return get_the_title( wc_get_page_id( 'shop' ) );
+				return esc_html( get_the_title( wc_get_page_id( 'shop' ) ) );
 			}
 
 			return $label;

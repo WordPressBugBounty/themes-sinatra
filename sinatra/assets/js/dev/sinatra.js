@@ -1150,10 +1150,10 @@ var sinatraTriggerEvent = function (el, typeArg) {
 
 			if (document.body.classList.contains('comments-visible')) {
 				document.body.classList.remove('comments-visible');
-				document.getElementById('sinatra-comments-toggle').querySelector('span').innerHTML = sinatra_vars.strings.comments_toggle_show;
+				document.getElementById('sinatra-comments-toggle').querySelector('span').textContent = sinatra_vars.strings.comments_toggle_show;
 			} else {
 				document.body.classList.add('comments-visible');
-				document.getElementById('sinatra-comments-toggle').querySelector('span').innerHTML = sinatra_vars.strings.comments_toggle_hide;
+				document.getElementById('sinatra-comments-toggle').querySelector('span').textContent = sinatra_vars.strings.comments_toggle_hide;
 			}
 		};
 

@@ -53,7 +53,7 @@ if ( ! empty( $sinatra_meta_elements ) ) {
 				$sinatra_edit_icon . __( 'Edit <span class="screen-reader-text">%s</span>', 'sinatra' ),
 				sinatra_get_allowed_html_tags()
 			),
-			get_the_title()
+			esc_html( get_the_title() )
 		),
 		'<span class="edit-link">',
 		'</span>'

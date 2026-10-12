@@ -53,6 +53,10 @@ if ( ! class_exists( 'Sinatra_Theme_Setup' ) ) :
 			// Add theme supports.
 			add_action( 'after_setup_theme', array( $this, 'setup' ), 10 );
 
+			// Register block patterns and block styles.
+			add_action( 'init', array( $this, 'register_block_patterns' ) );
+			add_action( 'init', array( $this, 'register_block_styles' ) );
+
 			// Content width.
 			add_action( 'wp', array( $this, 'content_width' ) );
 		}
@@ -143,17 +147,37 @@ if ( ! class_exists( 'Sinatra_Theme_Setup' ) ) :
 				)
 			);
 
-			// Enable HTML5 markup.
+			// Add theme support for Custom Header.
 			add_theme_support(
-				'html5',
-				array(
-					'search-form',
-					'gallery',
-					'caption',
-					'script',
-					'style',
+				'custom-header',
+				apply_filters(
+					'sinatra_custom_header_args',
+					array(
+						'default-image' => '',
+						'width'         => 1920,
+						'height'        => 500,
+						'flex-width'    => true,
+						'flex-height'   => true,
+						'uploads'       => true,
+						'header-text'   => false,
+					)
 				)
 			);
+
+			// Enable HTML5 markup.
+			$sinatra_html5 = array(
+				'search-form',
+				'gallery',
+				'caption',
+			);
+
+			// 'script' and 'style' are deprecated and unused since WordPress 7.0.
+			if ( version_compare( get_bloginfo( 'version' ), '7.0', '<' ) ) {
+				$sinatra_html5[] = 'script';
+				$sinatra_html5[] = 'style';
+			}
+
+			add_theme_support( 'html5', $sinatra_html5 );
 
 			// Add editor style.
 			$sinatra_suffix = defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ? '' : '.min';
@@ -175,6 +199,54 @@ if ( ! class_exists( 'Sinatra_Theme_Setup' ) ) :
 			if ( ! isset( $content_width ) ) {
 				$content_width = apply_filters( 'sinatra_content_width', intval( sinatra_option( 'container_width' ) ) - 100 ); // phpcs:ignore
 			}
+		}
+
+		/**
+		 * Register a block pattern.
+		 *
+		 * Block patterns are recommended by WordPress.org for classic themes as a
+		 * step toward block editor support. Keeps a single, simple pattern: a
+		 * three-column gallery grid the user can drop images into.
+		 *
+		 * @since 1.4.2
+		 */
+		public function register_block_patterns() {
+
+			if ( ! function_exists( 'register_block_pattern' ) ) {
+				return;
+			}
+
+			$image = '<!-- wp:image {"sizeSlug":"large","linkDestination":"none"} --><figure class="wp-block-image size-large"><img alt=""/></figure><!-- /wp:image -->';
+
+			register_block_pattern(
+				'sinatra/gallery-grid',
+				array(
+					'title'      => esc_html__( 'Gallery Grid', 'sinatra' ),
+					'categories' => array( 'gallery' ),
+					'content'    => '<!-- wp:gallery {"columns":3,"imageCrop":true,"linkTo":"none"} --><figure class="wp-block-gallery has-nested-images columns-3 is-cropped">' . str_repeat( $image, 6 ) . '</figure><!-- /wp:gallery -->',
+				)
+			);
+		}
+
+		/**
+		 * Register a block style.
+		 *
+		 * @since 1.4.2
+		 */
+		public function register_block_styles() {
+
+			if ( ! function_exists( 'register_block_style' ) ) {
+				return;
+			}
+
+			register_block_style(
+				'core/group',
+				array(
+					'name'         => 'sinatra-card',
+					'label'        => esc_html__( 'Card', 'sinatra' ),
+					'inline_style' => '.wp-block-group.is-style-sinatra-card{padding:2em;border:1px solid rgba(0,0,0,0.08);border-radius:6px;box-shadow:0 10px 30px rgba(0,0,0,0.06);}',
+				)
+			);
 		}
 	}
 

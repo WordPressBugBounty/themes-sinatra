@@ -1,9 +1,9 @@
 === Sinatra ===
 Contributors: sinatrateam
 Tags: two-columns, right-sidebar, left-sidebar, footer-widgets, blog, news, custom-background, custom-menu, post-formats, sticky-post, editor-style, threaded-comments, translation-ready, custom-colors, featured-images, full-width-template, microformats, theme-options, e-commerce
-Requires at least: 5.0
-Tested up to: 6.3
-Requires PHP: 5.6
+Requires at least: 6.0
+Tested up to: 7.1
+Requires PHP: 7.4
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Stable tag: trunk
@@ -23,6 +23,53 @@ Sinatra is a lightweight and highly customizable multi-purpose theme that makes 
 4. Navigate to Appearance » Customize to access theme options.
 
 == Changelog ==
+
+= 1.5.0 =
+* Improved: Block editor styles now load directly inside the iframed editor canvas (WordPress 7.1+).
+* Fixed: Google Fonts selected in the Customizer not displayed in the block editor.
+* Fixed: Post title typography and text selection color not applied in the block editor.
+* Removed: Internet Explorer polyfills (HTML5 Shiv, Flexibility) and IE-only stylesheet.
+* Removed: Deprecated 'script' and 'style' HTML5 theme support on WordPress 7.0+.
+* Fixed: Duplicate Theme URI and Author URI in the stylesheet header (Author URI removed).
+* Updated: Tested up to WordPress 7.1.
+
+= 1.4.2 =
+* Added: Gallery Grid block pattern and Card block style.
+* Added: Custom Header support.
+* Fixed: Potential CSS injection via Customizer typography and gradient settings (text-decoration, gradient-position and font-family are now sanitized and allowlisted).
+* Fixed: Plugin activate/deactivate AJAX actions now require the activate_plugins capability.
+* Fixed: Dynamic property deprecation notices on PHP 8.2+ by declaring the theme class properties.
+* Fixed: Theme version constant out of sync with the theme header.
+* Improved: Single text domain in the WooCommerce checkout template for language-pack compatibility.
+* Improved: Added Theme URI, Author URI and a copyright notice to the stylesheet header.
+* Updated: Tested up to WordPress 7.0.
+
+= 1.4.1 =
+* Improved: Notice class escaping in admin helpers.
+* Improved: Theme location explicitly passed to wp_nav_menu().
+* Improved: Header search widget routed through get_search_form() for filterability.
+* Improved: Accessibility label on WooCommerce product search form.
+
+= 1.4.0 =
+* Fixed: Stored XSS vulnerability via insufficient output escaping in sinatra_excerpt().
+* Fixed: Reflected XSS via unescaped search query in search forms and breadcrumbs.
+* Fixed: CSS injection via unsanitized typography Customizer values.
+* Fixed: CSS injection via background-image, background-size, background-repeat, and background-attachment using wrong sanitizers.
+* Fixed: CSS injection via background-color-overlay using sanitize_text_field instead of color sanitizer.
+* Fixed: Missing capability checks on AJAX handlers (dismiss notice, customizer tour).
+* Fixed: Typo bug using $post instead of $_POST in dismiss notice handler.
+* Fixed: Wrong escaping function (wp_kses_post) on metabox text input value attribute.
+* Fixed: Unescaped background-image URLs in inline styles.
+* Fixed: WooCommerce cart item data output without escaping.
+* Fixed: Missing echo on out-of-stock badge output.
+* Fixed: DOM XSS via innerHTML replaced with textContent.
+* Fixed: Default Customizer sanitize callback changed from sinatra_no_sanitize to sanitize_text_field.
+* Fixed: Admin ajaxurl passed without esc_url().
+* Improved: Added proper sanitizer for checkbox-group Customizer controls.
+* Improved: Added allowlist validation for CSS property values in Customizer.
+* Improved: Defense-in-depth output escaping in dynamic styles.
+* Updated: WordPress 6.9 compatibility.
+* Updated: npm dependencies.
 
 = 1.3 =
 * Updated: WooCommerce templates.
@@ -131,18 +178,27 @@ Sinatra is a lightweight and highly customizable multi-purpose theme that makes 
 * Improved: CSS enhancements.
 * Improved: WPML plugin compatibility.
 
+== Copyright ==
+
+Sinatra WordPress Theme, Copyright (C) 2020-2026 Sinatra Team.
+Sinatra is distributed under the terms of the GNU GPL version 2 or later.
+
+This program is free software: you can redistribute it and/or modify
+it under the terms of the GNU General Public License as published by
+the Free Software Foundation, either version 2 of the License, or
+(at your option) any later version.
+
+This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+GNU General Public License for more details.
+
 == Resources ==
 Feather Icons, https://feathericons.com/
 Copyright (c) 2013-2017 Cole Bemis, MIT License, http://www.opensource.org/licenses/mit-license.php
 
 ImagesLoaded, https://imagesloaded.desandro.com/
 Copyright (c) 2019 David DeSandro, MIT License, http://www.opensource.org/licenses/mit-license.php
-
-HTML5 Shiv, https://github.com/aFarkas/html5shiv
-Copyright (c) 2014 Alexander Farkas, MIT/GPL2 License, https://github.com/aFarkas/html5shiv/blob/master/MIT%20and%20GPL2%20licenses.md
-
-Flexibility, https://github.com/jonathantneal/flexibility
-Copyright (c) 2015 Jonathan Neal 10up, MIT License, https://github.com/jonathantneal/flexibility/blob/master/LICENSE.md
 
 Breadcrumb Trail, https://github.com/justintadlock/breadcrumb-trail
 Copyright (c) 2008-2017 Justin Tadlock, GNU GPL v2 or later License, https://opensource.org/licenses/GPL-2.0

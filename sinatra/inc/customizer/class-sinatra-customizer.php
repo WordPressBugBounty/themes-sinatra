@@ -374,7 +374,7 @@ if ( ! class_exists( 'Sinatra_Customizer' ) ) :
 					'default'           => sinatra()->options->get_default( $id ),
 					'type'              => sinatra_get_prop( $setting, 'type' ),
 					'transport'         => sinatra_get_prop( $setting, 'transport' ),
-					'sanitize_callback' => sinatra_get_prop( $setting, 'sanitize_callback', 'sinatra_no_sanitize' ),
+					'sanitize_callback' => sinatra_get_prop( $setting, 'sanitize_callback', 'sanitize_text_field' ),
 				)
 			);
 

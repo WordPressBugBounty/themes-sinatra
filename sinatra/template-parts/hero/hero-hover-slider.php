@@ -50,7 +50,7 @@ while ( $sinatra_posts->have_posts() ) :
 	$sinatra_posts->the_post();
 
 	// Background images HTML markup.
-	$sinatra_hero_bgs_html .= '<div class="hover-slide-bg" data-background="' . get_the_post_thumbnail_url( get_the_ID(), 'full' ) . '"></div>';
+	$sinatra_hero_bgs_html .= '<div class="hover-slide-bg" data-background="' . esc_url( get_the_post_thumbnail_url( get_the_ID(), 'full' ) ) . '"></div>';
 
 	// Post items HTML markup.
 	ob_start();

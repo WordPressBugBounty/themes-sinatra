@@ -101,7 +101,7 @@ if ( ! class_exists( 'Sinatra_Customizer_Transparent_Header' ) ) :
 			// Transparent header display on.
 			$options['setting']['sinatra_tsp_header_disable_on'] = array(
 				'transport'         => 'refresh',
-				'sanitize_callback' => 'sinatra_no_sanitize',
+				'sanitize_callback' => 'sinatra_sanitize_checkbox_group',
 				'control'           => array(
 					'type'        => 'sinatra-checkbox-group',
 					'label'       => esc_html__( 'Disable On: ', 'sinatra' ),

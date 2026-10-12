@@ -121,7 +121,7 @@ if ( ! function_exists( 'sinatra_get_the_title' ) ) {
 			} elseif ( is_search() ) {
 				// Search page - title always display.
 				/* translators: 1: search string */
-				$title = apply_filters( 'sinatra_search_page_title', sprintf( __( 'Search results for: %s', 'sinatra' ), get_search_query() ) );
+				$title = apply_filters( 'sinatra_search_page_title', sprintf( __( 'Search results for: %s', 'sinatra' ), esc_html( get_search_query() ) ) );
 			} elseif ( class_exists( 'WooCommerce' ) && is_shop() ) {
 				// Woocommerce.
 				$title = woocommerce_page_title( false );
@@ -789,7 +789,7 @@ if ( ! function_exists( 'sinatra_get_image_from_post' ) ) :
 
 			if ( $html ) {
 				$atts = array(
-					'alt' => get_the_title( $post->ID ),
+					'alt' => esc_attr( get_the_title( $post->ID ) ),
 				);
 
 				if ( sinatra_get_schema_markup( 'image' ) ) {
@@ -826,7 +826,7 @@ if ( ! function_exists( 'sinatra_get_post_thumbnail' ) ) :
 		$attachment_alt = empty( $attachment_alt ) ? get_the_title( $post ) : $attachment_alt;
 
 		$atts = array(
-			'alt' => $attachment_alt,
+			'alt' => esc_attr( $attachment_alt ),
 		);
 
 		if ( sinatra_get_schema_markup( 'image' ) ) {
@@ -1007,7 +1007,7 @@ function sinatra_masthead_atts( $atts = array(), $post_id = '' ) {
 	if ( is_singular( 'post' ) && 'in-page-header' === sinatra_option( 'single_title_position' ) && sinatra_is_header_transparent( $post_id ) ) {
 		if ( sinatra_show_post_thumbnail( $post_id ) && sinatra_single_post_displays( 'thumb' ) ) {
 			$atts['style']  = isset( $atts['style'] ) ? $atts['style'] : '';
-			$atts['style'] .= 'background-image: url(' . wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'full' ) . ');';
+			$atts['style'] .= 'background-image: url("' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'full' ) ) . '");';
 		}
 	}
 
@@ -1123,7 +1123,7 @@ function sinatra_page_header_atts( $atts = array(), $post_id = '' ) {
 	if ( is_singular( 'post' ) && 'in-page-header' === sinatra_option( 'single_title_position' ) && ! sinatra_is_header_transparent( $post_id ) ) {
 		if ( sinatra_show_post_thumbnail( $post_id ) && sinatra_single_post_displays( 'thumb' ) ) {
 			$atts['style']  = isset( $atts['style'] ) ? $atts['style'] : '';
-			$atts['style'] .= 'background-image: url(' . wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'full' ) . ');';
+			$atts['style'] .= 'background-image: url("' . esc_url( wp_get_attachment_image_url( get_post_thumbnail_id( $post_id ), 'full' ) ) . '");';
 		}
 	}
 
@@ -1569,7 +1569,7 @@ add_filter( 'get_archives_link', 'sinatra_arc_count_filter' );
 function sinatra_header_menu_desc( $item_output, $item, $depth, $args ) {
 
 	if ( $depth > 0 && $item->description ) {
-		$item_output = str_replace( '</a>', '<span class="description">' . $item->description . '</span></a>', $item_output );
+		$item_output = str_replace( '</a>', '<span class="description">' . esc_html( $item->description ) . '</span></a>', $item_output );
 	}
 
 	return $item_output;

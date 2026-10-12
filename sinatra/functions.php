@@ -28,7 +28,47 @@ final class Sinatra {
 	 * @since 1.0.0
 	 * @var string
 	 */
-	public $version = '1.3';
+	public $version = '1.5.0';
+
+	/**
+	 * Theme options instance.
+	 *
+	 * @since 1.0.0
+	 * @var Sinatra_Options
+	 */
+	public $options;
+
+	/**
+	 * Fonts instance.
+	 *
+	 * @since 1.0.0
+	 * @var Sinatra_Fonts
+	 */
+	public $fonts;
+
+	/**
+	 * Icons instance.
+	 *
+	 * @since 1.0.0
+	 * @var Sinatra_Icons
+	 */
+	public $icons;
+
+	/**
+	 * Customizer instance.
+	 *
+	 * @since 1.0.0
+	 * @var Sinatra_Customizer
+	 */
+	public $customizer;
+
+	/**
+	 * Admin instance.
+	 *
+	 * @since 1.0.0
+	 * @var Sinatra_Admin
+	 */
+	public $admin;
 
 	/**
 	 * Main Sinatra Instance.

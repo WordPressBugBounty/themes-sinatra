@@ -75,9 +75,11 @@ function sinatra_print_notice( $args ) {
 		}
 	}
 
-	$sinatra_is_dismissible = $args['is_dismissible'] ? ' is-dismissible' : ''; ?>
+	$sinatra_is_dismissible = $args['is_dismissible'] ? ' is-dismissible' : '';
+	$sinatra_notice_class   = 'notice sinatra-notice notice-' . $args['type'] . $sinatra_is_dismissible;
+	?>
 
-	<div id="<?php echo esc_attr( $args['message_id'] ); ?>" class="notice sinatra-notice notice-<?php echo esc_attr( $args['type'] ); ?><?php echo esc_attr( $sinatra_is_dismissible ); ?>">
+	<div id="<?php echo esc_attr( $args['message_id'] ); ?>" class="<?php echo esc_attr( $sinatra_notice_class ); ?>">
 		<p><?php echo ( wp_kses( $args['message'], sinatra_get_allowed_html_tags() ) ); ?></p>
 
 		<?php
@@ -154,12 +156,16 @@ function sinatra_dismiss_notice() {
 
 	check_ajax_referer( 'sinatra_dismiss_notice' );
 
+	if ( ! current_user_can( 'edit_theme_options' ) ) {
+		die;
+	}
+
 	if ( ! isset( $_POST['msgid'] ) ) {
 		die;
 	}
 
 	$message_id = sanitize_text_field( wp_unslash( $_POST['msgid'] ) );
-	$expires    = isset( $post['expires'] ) ? intval( $post['expires'] ) : 0;
+	$expires    = isset( $_POST['expires'] ) ? intval( $_POST['expires'] ) : 0;
 
 	$message              = (array) get_transient( 'sinatra_notice_' . $message_id );
 	$message['time']      = time();

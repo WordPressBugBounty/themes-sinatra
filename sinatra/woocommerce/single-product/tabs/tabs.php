@@ -13,10 +13,9 @@
  * Sinatra changes: added sinatra-container wrappers and si-fw-section. Added span inside tabs a elements,
  * because of underline animation. Added .si-entry to woocommerce-Tabs-panel (only if key === 'description' ).
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
- * @author  WooThemes
- * @package WooCommerce/Templates
- * @version 3.8.0
+ * @see     https://woocommerce.com/document/template-structure/
+ * @package WooCommerce\Templates
+ * @version 9.8.0
  */
 
 if ( ! defined( 'ABSPATH' ) ) {
@@ -38,8 +37,8 @@ if ( ! empty( $product_tabs ) ) : ?>
 		<ul class="tabs wc-tabs" role="tablist">
 			<div class="si-container">
 				<?php foreach ( $product_tabs as $key => $product_tab ) : ?>
-					<li class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>">
-						<a href="#tab-<?php echo esc_attr( $key ); ?>"><span><?php echo esc_html( apply_filters( 'woocommerce_product_' . $key . '_tab_title', esc_html( $product_tab['title'] ), $key ) ); ?></span></a>
+					<li role="presentation" class="<?php echo esc_attr( $key ); ?>_tab" id="tab-title-<?php echo esc_attr( $key ); ?>">
+						<a href="#tab-<?php echo esc_attr( $key ); ?>" role="tab" aria-controls="tab-<?php echo esc_attr( $key ); ?>"><span><?php echo esc_html( apply_filters( 'woocommerce_product_' . $key . '_tab_title', esc_html( $product_tab['title'] ), $key ) ); ?></span></a>
 					</li>
 				<?php endforeach; ?>
 			</div>

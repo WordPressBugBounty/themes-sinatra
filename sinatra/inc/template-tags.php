@@ -477,7 +477,7 @@ if ( ! function_exists( 'sinatra_excerpt' ) ) :
 			}
 		}
 
-		echo $output; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo wp_kses_post( $output );
 	}
 endif;
 
@@ -1144,6 +1144,7 @@ if ( ! function_exists( 'sinatra_social_links' ) ) :
 	function sinatra_social_links( $args = array() ) {
 
 		$defaults = array(
+			'theme_location'  => '',
 			'fallback_cb'     => '',
 			'menu'            => '',
 			'container'       => 'nav',
@@ -1182,7 +1183,12 @@ if ( ! function_exists( 'sinatra_social_links' ) ) :
 		}
 
 		if ( ! empty( $args['menu'] ) && is_nav_menu( $args['menu'] ) ) {
-			wp_nav_menu( $args );
+			wp_nav_menu(
+				array_merge(
+					array( 'theme_location' => '' ),
+					$args
+				)
+			);
 		}
 	}
 endif;
@@ -1198,8 +1204,9 @@ if ( ! function_exists( 'sinatra_navigation' ) ) :
 	function sinatra_navigation( $args = array() ) {
 
 		$defaults = array(
-			'before_nav' => '',
-			'after_nav'  => '',
+			'theme_location' => '',
+			'before_nav'     => '',
+			'after_nav'      => '',
 		);
 
 		$args = wp_parse_args( $args, $defaults );
@@ -1210,7 +1217,12 @@ if ( ! function_exists( 'sinatra_navigation' ) ) :
 		$args = apply_filters( 'sinatra_navigation_args', $args );
 
 		if ( ! empty( $args['menu'] ) && is_nav_menu( $args['menu'] ) ) {
-			wp_nav_menu( $args );
+			wp_nav_menu(
+				array_merge(
+					array( 'theme_location' => '' ),
+					$args
+				)
+			);
 		}
 	}
 endif;

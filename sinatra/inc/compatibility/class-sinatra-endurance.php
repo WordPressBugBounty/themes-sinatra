@@ -497,6 +497,10 @@ if ( ! class_exists( 'Sinatra_Endurance' ) ) :
 			// Security check.
 			check_ajax_referer( 'sinatra_customizer' );
 
+			if ( ! current_user_can( 'customize' ) ) {
+				wp_send_json_error();
+			}
+
 			$customizer_pointers = $this->customizer_pointers();
 
 			if ( ! empty( $customizer_pointers ) ) {

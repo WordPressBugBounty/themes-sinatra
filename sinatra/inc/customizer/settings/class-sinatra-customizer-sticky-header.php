@@ -80,7 +80,7 @@ if ( ! class_exists( 'Sinatra_Customizer_Sticky_Header' ) ) :
 			// Hide sticky header on.
 			$options['setting']['sinatra_sticky_header_hide_on'] = array(
 				'transport'         => 'refresh',
-				'sanitize_callback' => 'sinatra_no_sanitize',
+				'sanitize_callback' => 'sinatra_sanitize_checkbox_group',
 				'control'           => array(
 					'type'        => 'sinatra-checkbox-group',
 					'label'       => esc_html__( 'Hide on: ', 'sinatra' ),

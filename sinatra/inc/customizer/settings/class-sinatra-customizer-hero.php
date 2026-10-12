@@ -86,7 +86,7 @@ if ( ! class_exists( 'Sinatra_Customizer_Hero' ) ) :
 			// Hero display on.
 			$options['setting']['sinatra_hero_enable_on'] = array(
 				'transport'         => 'refresh',
-				'sanitize_callback' => 'sinatra_no_sanitize',
+				'sanitize_callback' => 'sinatra_sanitize_checkbox_group',
 				'control'           => array(
 					'type'        => 'sinatra-checkbox-group',
 					'label'       => esc_html__( 'Enable On: ', 'sinatra' ),

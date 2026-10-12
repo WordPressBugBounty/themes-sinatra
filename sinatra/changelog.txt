@@ -1,3 +1,50 @@
+= 1.5.0 =
+* Improved: Block editor styles now load directly inside the iframed editor canvas (WordPress 7.1+).
+* Fixed: Google Fonts selected in the Customizer not displayed in the block editor.
+* Fixed: Post title typography and text selection color not applied in the block editor.
+* Removed: Internet Explorer polyfills (HTML5 Shiv, Flexibility) and IE-only stylesheet.
+* Removed: Deprecated 'script' and 'style' HTML5 theme support on WordPress 7.0+.
+* Fixed: Duplicate Theme URI and Author URI in the stylesheet header (Author URI removed).
+* Updated: Tested up to WordPress 7.1.
+
+= 1.4.2 =
+* Added: Gallery Grid block pattern and Card block style.
+* Added: Custom Header support.
+* Fixed: Potential CSS injection via Customizer typography and gradient settings (text-decoration, gradient-position and font-family are now sanitized and allowlisted).
+* Fixed: Plugin activate/deactivate AJAX actions now require the activate_plugins capability.
+* Fixed: Dynamic property deprecation notices on PHP 8.2+ by declaring the theme class properties.
+* Fixed: Theme version constant out of sync with the theme header.
+* Improved: Single text domain in the WooCommerce checkout template for language-pack compatibility.
+* Improved: Added Theme URI, Author URI and a copyright notice to the stylesheet header.
+* Updated: Tested up to WordPress 7.0.
+
+= 1.4.1 =
+* Improved: Notice class escaping in admin helpers.
+* Improved: Theme location explicitly passed to wp_nav_menu().
+* Improved: Header search widget routed through get_search_form() for filterability.
+* Improved: Accessibility label on WooCommerce product search form.
+
+= 1.4.0 =
+* Fixed: Stored XSS vulnerability via insufficient output escaping in sinatra_excerpt().
+* Fixed: Reflected XSS via unescaped search query in search forms and breadcrumbs.
+* Fixed: CSS injection via unsanitized typography Customizer values.
+* Fixed: CSS injection via background-image, background-size, background-repeat, and background-attachment using wrong sanitizers.
+* Fixed: CSS injection via background-color-overlay using sanitize_text_field instead of color sanitizer.
+* Fixed: Missing capability checks on AJAX handlers (dismiss notice, customizer tour).
+* Fixed: Typo bug using $post instead of $_POST in dismiss notice handler.
+* Fixed: Wrong escaping function (wp_kses_post) on metabox text input value attribute.
+* Fixed: Unescaped background-image URLs in inline styles.
+* Fixed: WooCommerce cart item data output without escaping.
+* Fixed: Missing echo on out-of-stock badge output.
+* Fixed: DOM XSS via innerHTML replaced with textContent.
+* Fixed: Default Customizer sanitize callback changed from sinatra_no_sanitize to sanitize_text_field.
+* Fixed: Admin ajaxurl passed without esc_url().
+* Improved: Added proper sanitizer for checkbox-group Customizer controls.
+* Improved: Added allowlist validation for CSS property values in Customizer.
+* Improved: Defense-in-depth output escaping in dynamic styles.
+* Updated: WordPress 6.9 compatibility.
+* Updated: npm dependencies.
+
 = 1.3 =
 * Updated: WooCommerce templates.
 * Updated: WordPress 6.3 compatibility.

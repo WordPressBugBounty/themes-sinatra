@@ -472,6 +472,11 @@ if ( ! class_exists( 'Sinatra_Dashboard' ) ) :
 			// Security check.
 			check_ajax_referer( 'sinatra_nonce' );
 
+			// Capability check.
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error( esc_html__( 'You are not allowed to manage plugins.', 'sinatra' ) );
+			}
+
 			// Plugin data.
 			$plugin = isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '';
 
@@ -502,6 +507,11 @@ if ( ! class_exists( 'Sinatra_Dashboard' ) ) :
 
 			// Security check.
 			check_ajax_referer( 'sinatra_nonce' );
+
+			// Capability check.
+			if ( ! current_user_can( 'activate_plugins' ) ) {
+				wp_send_json_error( esc_html__( 'You are not allowed to manage plugins.', 'sinatra' ) );
+			}
 
 			// Plugin data.
 			$plugin = isset( $_POST['plugin'] ) ? sanitize_text_field( wp_unslash( $_POST['plugin'] ) ) : '';

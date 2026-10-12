@@ -313,6 +313,22 @@ function sinatra_no_sanitize( $val ) {
 }
 
 /**
+ * Checkbox group sanitization.
+ *
+ * @since 1.3.1
+ * @param mixed  $value   Value of the checkbox group.
+ * @param object $setting Setting object.
+ */
+function sinatra_sanitize_checkbox_group( $value, $setting ) {
+
+	if ( ! is_array( $value ) ) {
+		return (array) $setting->default;
+	}
+
+	return array_map( 'sanitize_key', $value );
+}
+
+/**
  * Sanitize Background control value.
  *
  * @since 1.0.0
@@ -486,6 +502,7 @@ function sinatra_sanitize_typography( $value, $setting ) {
 		'font-weight'         => '',
 		'font-style'          => '',
 		'text-transform'      => '',
+		'text-decoration'     => '',
 		'font-size-desktop'   => '',
 		'font-size-tablet'    => '',
 		'font-size-mobile'    => '',
@@ -501,6 +518,62 @@ function sinatra_sanitize_typography( $value, $setting ) {
 	$defaults = wp_parse_args( $setting->default, $defaults );
 
 	$value = wp_parse_args( $value, $defaults );
+
+	// Sanitize font-weight.
+	$allowed_font_weights = array( 'inherit', '100', '200', '300', '400', '500', '600', '700', '800', '900', 'normal', 'bold', '' );
+	if ( ! in_array( (string) $value['font-weight'], $allowed_font_weights, true ) ) {
+		$value['font-weight'] = $defaults['font-weight'];
+	}
+
+	// Sanitize font-style.
+	$allowed_font_styles = array( 'inherit', 'normal', 'italic', 'oblique', '' );
+	if ( ! in_array( $value['font-style'], $allowed_font_styles, true ) ) {
+		$value['font-style'] = $defaults['font-style'];
+	}
+
+	// Sanitize text-transform.
+	$allowed_text_transforms = array( 'inherit', 'none', 'capitalize', 'uppercase', 'lowercase', '' );
+	if ( ! in_array( $value['text-transform'], $allowed_text_transforms, true ) ) {
+		$value['text-transform'] = $defaults['text-transform'];
+	}
+
+	// Sanitize text-decoration.
+	$allowed_text_decorations = array( 'inherit', 'none', 'underline', 'overline', 'line-through', '' );
+	if ( ! in_array( $value['text-decoration'], $allowed_text_decorations, true ) ) {
+		$value['text-decoration'] = $defaults['text-decoration'];
+	}
+
+	// Sanitize font-family.
+	$value['font-family'] = sanitize_text_field( $value['font-family'] );
+	$value['font-family'] = preg_replace( '/[^a-zA-Z0-9 _,\'"\-]/', '', $value['font-family'] );
+
+	// Sanitize font-subsets.
+	if ( is_array( $value['font-subsets'] ) ) {
+		$value['font-subsets'] = array_map( 'sanitize_key', $value['font-subsets'] );
+	} else {
+		$value['font-subsets'] = array();
+	}
+
+	// Sanitize numeric values.
+	$numeric_fields = array(
+		'font-size-desktop', 'font-size-tablet', 'font-size-mobile',
+		'letter-spacing',
+		'line-height-desktop', 'line-height-tablet', 'line-height-mobile',
+	);
+	foreach ( $numeric_fields as $field ) {
+		if ( '' !== $value[ $field ] && ! is_numeric( $value[ $field ] ) ) {
+			$value[ $field ] = $defaults[ $field ];
+		}
+	}
+
+	// Sanitize unit fields.
+	$allowed_units = array( 'px', 'em', 'rem', '%', '' );
+	$unit_fields   = array( 'font-size-unit', 'letter-spacing-unit', 'line-height-unit' );
+	foreach ( $unit_fields as $field ) {
+		if ( ! in_array( $value[ $field ], $allowed_units, true ) ) {
+			$value[ $field ] = $defaults[ $field ];
+		}
+	}
 
 	return $value;
 }
@@ -564,7 +637,13 @@ function sinatra_sanitize_design_options( $value, $setting ) {
 				}
 
 				if ( isset( $value['gradient-position'] ) ) {
-					$sanitized['gradient-position'] = sanitize_text_field( $value['gradient-position'] );
+					// Allowlist CSS position keywords only ( e.g. "center center" ) so the
+					// value cannot break out of radial-gradient() or the rule block.
+					$position = sanitize_text_field( $value['gradient-position'] );
+					if ( ! preg_match( '/^(center|top|bottom|left|right)( (center|top|bottom|left|right))?$/', $position ) ) {
+						$position = isset( $setting->default['gradient-position'] ) ? $setting->default['gradient-position'] : 'center center';
+					}
+					$sanitized['gradient-position'] = $position;
 				}
 			}
 
@@ -572,15 +651,16 @@ function sinatra_sanitize_design_options( $value, $setting ) {
 			if ( array_key_exists( 'image', $control->display['background'] ) ) {
 
 				if ( isset( $value['background-image'] ) ) {
-					$sanitized['background-image'] = sanitize_text_field( $value['background-image'] );
+					$sanitized['background-image'] = esc_url_raw( $value['background-image'] );
 				}
 
 				if ( isset( $value['background-image-id'] ) ) {
-					$sanitized['background-image-id'] = sanitize_text_field( $value['background-image-id'] );
+					$sanitized['background-image-id'] = absint( $value['background-image-id'] );
 				}
 
 				if ( isset( $value['background-repeat'] ) ) {
-					$sanitized['background-repeat'] = sanitize_text_field( $value['background-repeat'] );
+					$allowed_repeat = array( 'repeat', 'repeat-x', 'repeat-y', 'no-repeat' );
+					$sanitized['background-repeat'] = in_array( $value['background-repeat'], $allowed_repeat, true ) ? $value['background-repeat'] : 'repeat';
 				}
 
 				if ( isset( $value['background-position-x'] ) ) {
@@ -592,15 +672,17 @@ function sinatra_sanitize_design_options( $value, $setting ) {
 				}
 
 				if ( isset( $value['background-size'] ) ) {
-					$sanitized['background-size'] = sanitize_text_field( $value['background-size'] );
+					$allowed_size = array( 'auto', 'cover', 'contain' );
+					$sanitized['background-size'] = in_array( $value['background-size'], $allowed_size, true ) ? $value['background-size'] : 'auto';
 				}
 
 				if ( isset( $value['background-attachment'] ) ) {
-					$sanitized['background-attachment'] = sanitize_text_field( $value['background-attachment'] );
+					$allowed_attachment = array( 'scroll', 'fixed', 'local' );
+					$sanitized['background-attachment'] = in_array( $value['background-attachment'], $allowed_attachment, true ) ? $value['background-attachment'] : 'scroll';
 				}
 
 				if ( isset( $value['background-color-overlay'] ) ) {
-					$sanitized['background-color-overlay'] = sanitize_text_field( $value['background-color-overlay'] );
+					$sanitized['background-color-overlay'] = sinatra_sanitize_color( $value['background-color-overlay'] );
 				}
 			}
 		}

@@ -12,9 +12,9 @@
  *
  * Sinatra changes: cart table.
  *
- * @see     https://docs.woocommerce.com/document/template-structure/
+ * @see     https://woocommerce.com/document/template-structure/
  * @package WooCommerce\Templates
- * @version 7.9.0
+ * @version 10.1.0
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -27,11 +27,11 @@ do_action( 'woocommerce_before_cart' ); ?>
 	<table class="shop_table shop_table_responsive cart woocommerce-cart-form__contents" cellspacing="0">
 		<thead>
 			<tr>
-				<th class="product-name"><?php esc_html_e( 'Product', 'sinatra' ); ?>  <?php echo '(' . count( WC()->cart->get_cart() ) . ')'; ?></th>
-				<th class="product-price"><?php esc_html_e( 'Price', 'sinatra' ); ?></th>
-				<th class="product-quantity"><?php esc_html_e( 'Quantity', 'sinatra' ); ?></th>
-				<th class="product-subtotal"><?php esc_html_e( 'Total', 'sinatra' ); ?></th>
-				<th class="product-remove"></th>
+				<th scope="col" class="product-name"><?php esc_html_e( 'Product', 'sinatra' ); ?>  <?php echo '(' . count( WC()->cart->get_cart() ) . ')'; ?></th>
+				<th scope="col" class="product-price"><?php esc_html_e( 'Price', 'sinatra' ); ?></th>
+				<th scope="col" class="product-quantity"><?php esc_html_e( 'Quantity', 'sinatra' ); ?></th>
+				<th scope="col" class="product-subtotal"><?php esc_html_e( 'Total', 'sinatra' ); ?></th>
+				<th scope="col" class="product-remove"></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -49,6 +49,19 @@ do_action( 'woocommerce_before_cart' ); ?>
 
 						<td class="product-name" data-title="<?php esc_attr_e( 'Product', 'sinatra' ); ?>">
 						<?php
+						/**
+						 * Filter the product thumbnail displayed in the WooCommerce cart.
+						 *
+						 * This filter allows developers to customize the HTML output of the product
+						 * thumbnail. It passes the product image along with cart item data
+						 * for potential modifications before being displayed in the cart.
+						 *
+						 * @param string $thumbnail     The HTML for the product image.
+						 * @param array  $cart_item     The cart item data.
+						 * @param string $cart_item_key Unique key for the cart item.
+						 *
+						 * @since 2.1.0
+						 */
 						$thumbnail = apply_filters( 'woocommerce_cart_item_thumbnail', $_product->get_image(), $cart_item, $cart_item_key );
 
 						if ( ! $product_permalink ) {
@@ -68,7 +81,7 @@ do_action( 'woocommerce_before_cart' ); ?>
 						do_action( 'woocommerce_after_cart_item_name', $cart_item, $cart_item_key );
 
 						// Meta data.
-						echo wc_get_formatted_cart_item_data( $cart_item ); // phpcs:ignore
+						echo wp_kses_post( wc_get_formatted_cart_item_data( $cart_item ) );
 
 						// Backorder notification.
 						if ( $_product->backorders_require_notification() && $_product->is_on_backorder( $cart_item['quantity'] ) ) {

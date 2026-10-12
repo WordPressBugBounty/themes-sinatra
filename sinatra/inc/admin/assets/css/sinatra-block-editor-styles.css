@@ -23,13 +23,8 @@
   font-size: inherit;
   padding: 0.5em 2em;
   min-height: 45px;
-  -js-display: inline-flex;
-  display: -webkit-inline-box;
-  display: -ms-inline-flexbox;
   display: inline-flex;
-  -webkit-box-align: center;
-      -ms-flex-align: center;
-          align-items: center;
+  align-items: center;
 }
 
 .alignwide {
@@ -98,7 +93,7 @@
   top: 8px;
 }
 
-.editor-post-title__block .editor-post-title__input {
+.editor-styles-wrapper .editor-post-title__input {
   font-family: inherit;
 }
 .editor-styles-wrapper {
@@ -398,16 +393,15 @@
   border-radius: 12px;
 }
 .editor-styles-wrapper .wp-block .si-bs {
-  -webkit-box-shadow: 0 10px 35px -3px rgba(0, 0, 0, 0.12);
-          box-shadow: 0 10px 35px -3px rgba(0, 0, 0, 0.12);
+  box-shadow: 0 10px 35px -3px rgba(0, 0, 0, 0.12);
 }
 @media (max-width: 782px) and (min-width: 600px) {
   .wp-block-column:nth-child(even) {
     margin-left: 30px;
-    -ms-flex-preferred-size: calc(50% - (30px / 2)) !important;
-        flex-basis: calc(50% - (30px / 2)) !important;
+    flex-basis: calc(50% - 30px / 2) !important;
   }
 }
+
 @media (min-width: 600px) {
   [data-type="core/columns"][data-align=full] .wp-block-columns {
     padding-left: 0;
@@ -416,7 +410,7 @@
   [data-type="core/columns"][data-align=full] .wp-block-columns.has-background {
     padding: 20px 30px;
   }
-  #editor .editor-styles-wrapper .wp-block[data-align=wide] > div {
+  :root .editor-styles-wrapper .wp-block[data-align=wide] > div {
     margin-left: -30px;
     margin-right: -30px;
   }
@@ -424,8 +418,7 @@
 @media (min-width: 782px) {
   .wp-block-columns {
     margin-bottom: 2em;
-    -ms-flex-wrap: nowrap !important;
-        flex-wrap: nowrap !important;
+    flex-wrap: nowrap !important;
   }
   .wp-block-columns .wp-block-column {
     margin-bottom: 0;
@@ -434,14 +427,13 @@
     margin-left: 30px;
   }
 }
+
 @media (max-width: 782px) {
   .wp-block-columns .wp-block-column:empty {
     display: none;
   }
   .wp-block-columns .wp-block-column:empty + .wp-block-column {
-    -webkit-box-flex: 1;
-        -ms-flex-positive: 1;
-            flex-grow: 1;
+    flex-grow: 1;
     margin-left: 0;
   }
 }

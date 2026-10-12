@@ -1592,11 +1592,11 @@ if ( ! class_exists( 'Sinatra_Dynamic_Styles' ) ) :
 					}
 				} elseif ( 'image' === $background_type ) {
 					$css_buffer .= '
-						background-image: url(' . $setting['background-image'] . ');
-						background-size: ' . $setting['background-size'] . ';
-						background-attachment: ' . $setting['background-attachment'] . ';
-						background-position: ' . $setting['background-position-x'] . '% ' . $setting['background-position-y'] . '%;
-						background-repeat: ' . $setting['background-repeat'] . ';
+						background-image: url(' . esc_url( $setting['background-image'] ) . ');
+						background-size: ' . esc_attr( $setting['background-size'] ) . ';
+						background-attachment: ' . esc_attr( $setting['background-attachment'] ) . ';
+						background-position: ' . intval( $setting['background-position-x'] ) . '% ' . intval( $setting['background-position-y'] ) . '%;
+						background-repeat: ' . esc_attr( $setting['background-repeat'] ) . ';
 					';
 				}
 
@@ -2020,8 +2020,8 @@ if ( ! class_exists( 'Sinatra_Dynamic_Styles' ) ) :
 					color: ' . $accent_color . ';
 				}
 
-				#editor .editor-styles-wrapper ::-moz-selection { background-color: ' . $accent_color . '; color: #FFF; }
-				#editor .editor-styles-wrapper ::selection { background-color: ' . $accent_color . '; color: #FFF; }
+				:root .editor-styles-wrapper ::-moz-selection { background-color: ' . $accent_color . '; color: #FFF; }
+				:root .editor-styles-wrapper ::selection { background-color: ' . $accent_color . '; color: #FFF; }
 
 				
 				.editor-styles-wrapper blockquote,
@@ -2119,13 +2119,13 @@ if ( ! class_exists( 'Sinatra_Dynamic_Styles' ) ) :
 			}
 
 			// Headings typography.
-			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h1.wp-block, :root .editor-styles-wrapper h2.wp-block, :root .editor-styles-wrapper h3.wp-block, :root .editor-styles-wrapper h4.wp-block, :root .editor-styles-wrapper h5.wp-block, :root .editor-styles-wrapper h6.wp-block, :root .editor-styles-wrapper .editor-post-title__block .editor-post-title__input', 'headings_font' );
+			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h1.wp-block, :root .editor-styles-wrapper h2.wp-block, :root .editor-styles-wrapper h3.wp-block, :root .editor-styles-wrapper h4.wp-block, :root .editor-styles-wrapper h5.wp-block, :root .editor-styles-wrapper h6.wp-block, :root .editor-styles-wrapper .editor-post-title__input', 'headings_font' );
 
 			// Heading em.
 			$css .= $this->get_typography_field_css( '.editor-styles-wrapper h1.wp-block em, .editor-styles-wrapper h2.wp-block em, .editor-styles-wrapper h3.wp-block em, .editor-styles-wrapper h4.wp-block em, .editor-styles-wrapper h5.wp-block em, .editor-styles-wrapper h6.wp-block em', 'heading_em_font' );
 
 			// Headings (H1-H6).
-			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h1.wp-block, :root .editor-styles-wrapper .h1, :root .editor-styles-wrapper .editor-post-title__block .editor-post-title__input', 'h1_font' );
+			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h1.wp-block, :root .editor-styles-wrapper .h1, :root .editor-styles-wrapper .editor-post-title__input', 'h1_font' );
 			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h2.wp-block, :root .editor-styles-wrapper .h2', 'h2_font' );
 			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h3.wp-block, :root .editor-styles-wrapper .h3', 'h3_font' );
 			$css .= $this->get_typography_field_css( ':root .editor-styles-wrapper h4.wp-block', 'h4_font' );
@@ -2140,13 +2140,13 @@ if ( ! class_exists( 'Sinatra_Dynamic_Styles' ) ) :
 				:root .editor-styles-wrapper .h4,
 				:root .editor-styles-wrapper h5,
 				:root .editor-styles-wrapper h6,
-				:root .editor-post-title__block .editor-post-title__input {
+				:root .editor-styles-wrapper .editor-post-title__input {
 					color: ' . $headings_color . ';
 				}
 			';
 
 			// Page header font size.
-			$css .= $this->get_range_field_css( ':root .editor-styles-wrapper .editor-post-title__block .editor-post-title__input', 'font-size', 'page_header_font_size', true );
+			$css .= $this->get_range_field_css( ':root .editor-styles-wrapper .editor-post-title__input', 'font-size', 'page_header_font_size', true );
 
 			// Link hover color.
 			$css .= '
